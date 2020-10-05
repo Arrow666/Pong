@@ -5,9 +5,9 @@ public class MatchCreator : MonoBehaviour
   [SerializeField] Vector3[] paddleSpawnPositions;
   [SerializeField] MatchModeStructFactory matchModeFactory;
 
-  public IMatch CreateMatch(GameModeTypes gameMode)
+  public IMatch CreateMatch()
   {
-    switch (gameMode)
+    switch (matchModeFactory.gameModeTypes)
     {
       case GameModeTypes.SinglePlayer:
         {

@@ -21,25 +21,24 @@ public class GameManager : MonoBehaviour
 
   [SerializeField] ScoreBoardDisplay scoreBoard;
   [SerializeField] MatchCreator matchCreator;
+  GameStatusStateMachine gameStatusStateMachine;
   IMatch match;
 
-  private void Update()
+  private void Start()
   {
-    if (Input.GetKeyDown(KeyCode.Space))
-    {
-      MakeAMatch();
-    }
+    gameStatusStateMachine = new GameStatusStateMachine(GameStatusEnum.ReadyToStart);
   }
 
-  private void MakeAMatch()
+  public void MakeAMatch()
   {
     //TODO: Match Should be Created as per Match Selection in UI i.e.
-    //match = matchCreator.CreateMatch(GameModeTypes.SinglePlayer);
+    match = matchCreator.CreateMatch();
+    gameStatusStateMachine.ChangeGameStatus(GameStatusEnum.GameBegun);
   }
 
   public void UpdateScore(GamePlaySide playerScoredSide)
   {
-    scoreBoard.UpdateScore(playerScoredSide, match.ScoreUpdate(playerScoredSide));
+    //scoreBoard.UpdateScore(playerScoredSide, match.ScoreUpdate(playerScoredSide));
   }
 
 }

@@ -71,6 +71,7 @@ public class MatchModeSelector : MonoBehaviour
     {
       case GameModeTypes.SinglePlayer:
         {
+          matchModeFactory.gameModeTypes = GameModeTypes.SinglePlayer;
           matchModeFactory.playSide = (GamePlaySide)playSideDropDown.value;
           matchModeFactory.gameDifficultyTypes = (GameDifficultyTypes)gameDifficultyDropDown.value;
           matchModeFactory.maxScoreToWin = Convert.ToInt32(maxScoreToWinDropDown.options[maxScoreToWinDropDown.value].text);
@@ -78,6 +79,7 @@ public class MatchModeSelector : MonoBehaviour
         break;
       case GameModeTypes.TwoPlayer:
         {
+          matchModeFactory.gameModeTypes = GameModeTypes.TwoPlayer;
           matchModeFactory.playSide = (GamePlaySide)playSideDropDown.value;
           matchModeFactory.maxScoreToWin = Convert.ToInt32(maxScoreToWinDropDown.options[maxScoreToWinDropDown.value].text);
         }

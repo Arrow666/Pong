@@ -3,6 +3,7 @@
 public class MatchModeStructFactory : MonoBehaviour
 {
   [SerializeField] GameObject playerToSpawn;
+  public GameModeTypes gameModeTypes;
   public GamePlaySide playSide;
   public GameDifficultyTypes gameDifficultyTypes;
   public int maxScoreToWin;

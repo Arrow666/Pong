@@ -1,17 +1,25 @@
 ﻿using UnityEngine;
 
-public class GameSelectionWindowView : MonoBehaviour, IWindowView
+public class GameSelectionWindowView : MonoBehaviour
 {
-  public GameObject gameSelectionWindow;
+  public WindowViewClass windowView;
+
+  private void OnEnable()
+  {
+    if(windowView == null)
+    {
+      Debug.LogError($"GameSelectionWindowView : windowView is not set in inspector", this);
+    }
+  }
 
   public void ActivateWindow()
   {
-    gameSelectionWindow.SetActive(true);
+    windowView.ActivateWindow();
   }
 
   public void DeActivateWindow()
   {
-    gameSelectionWindow.SetActive(false);
+    windowView.DeActivateWindow();
   }
 
 }

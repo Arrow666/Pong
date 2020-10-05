@@ -3,34 +3,33 @@
 public class GameModeSelector : MonoBehaviour
 {
   [SerializeField] MatchModeSelector matchModeSelector;
-  [SerializeField] GameModeSelectedPlayerDisplayer gameModePlayerSelectorUIToggler;
+  [SerializeField] GameModeSelectedPlayerDisplayer gameModeSelectedPlayerDisplayer;
+
   GameModeTypes selectedGameMode;
   bool singlePlayerModeSelected = true;
 
-  private void Start()
+  private void OnEnable()
   {
     selectedGameMode = GameModeTypes.SinglePlayer;
-    SelectGameMode();
+    gameModeSelectedPlayerDisplayer.SinglePlayerSelected();
   }
-  private void Update()
+
+  public void ChangeGameMode()
   {
-    if (Input.GetButtonDown("Vertical"))
+    singlePlayerModeSelected = !singlePlayerModeSelected;
+    if (singlePlayerModeSelected == true)
     {
-      singlePlayerModeSelected = !singlePlayerModeSelected;
-      if (singlePlayerModeSelected == true)
-      {
-        selectedGameMode = GameModeTypes.SinglePlayer;
-        gameModePlayerSelectorUIToggler.SinglePlayerSelected();
-      }
-      else
-      {
-        selectedGameMode = GameModeTypes.TwoPlayer;
-        gameModePlayerSelectorUIToggler.TwoPlayerSelected();
-      }
+      selectedGameMode = GameModeTypes.SinglePlayer;
+      gameModeSelectedPlayerDisplayer.SinglePlayerSelected();
+    }
+    else
+    {
+      selectedGameMode = GameModeTypes.TwoPlayer;
+      gameModeSelectedPlayerDisplayer.TwoPlayerSelected();
     }
   }
 
-  public void SelectGameMode()
+  public void StartGameMode()
   {
     matchModeSelector.ChangeMatchMode(selectedGameMode);
   }
