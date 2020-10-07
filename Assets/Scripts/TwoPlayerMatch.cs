@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class TwoPlayerMatch : IMatch
 {
-  readonly ScoreMaintainer scoreCalculator;
+  readonly ScoreMaintainer scoreMaintainer;
   readonly Dictionary<PlayerId, Player> players;
   readonly Vector3[] playerSpawnPositions;
 
-  public TwoPlayerMatch(TwoPlayerMatchModeStructure tp_MatchModeStructure, Vector3[] playerSpawnPositions)
+  public bool IsMatchFinished { get; private set; }
+
+  public TwoPlayerMatch(TwoPlayerMatchModeStructure tp_MatchModeStructure, Vector3[] _playerSpawnPositions)
   {
     players = new Dictionary<PlayerId, Player>();
-    this.playerSpawnPositions = playerSpawnPositions;
+    playerSpawnPositions = _playerSpawnPositions;
 
 
     if (tp_MatchModeStructure.playSide == GamePlaySide.Left)
@@ -27,7 +29,7 @@ public class TwoPlayerMatch : IMatch
       players.Add(PlayerId.One, playerOne);
       players.Add(PlayerId.Two, playerTwo);
 
-      scoreCalculator = new ScoreMaintainer(tp_MatchModeStructure.maxScoreToWin);
+      scoreMaintainer = new ScoreMaintainer(tp_MatchModeStructure.maxScoreToWin);
     }
     else
     {
@@ -43,19 +45,19 @@ public class TwoPlayerMatch : IMatch
       players.Add(PlayerId.One, playerOne);
       players.Add(PlayerId.Two, playerTwo);
 
-      scoreCalculator = new ScoreMaintainer(tp_MatchModeStructure.maxScoreToWin, true);
+      scoreMaintainer = new ScoreMaintainer(tp_MatchModeStructure.maxScoreToWin, true);
     }
 
   }
 
   public int ScoreUpdate(GamePlaySide playerScoredSide)
   {
-    return scoreCalculator.ScoreUpdate(playerScoredSide);
-  }
-
-  public void ScoreReset()
-  {
-    scoreCalculator.ScoreReset();
+    int scoreToUpdate = scoreMaintainer.ScoreUpdate(playerScoredSide);
+    if (scoreMaintainer.IsThereAWinner == true)
+    {
+      IsMatchFinished = true;
+    }
+    return scoreToUpdate;
   }
 
 }

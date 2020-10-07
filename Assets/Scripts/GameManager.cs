@@ -29,16 +29,35 @@ public class GameManager : MonoBehaviour
     gameStatusStateMachine = new GameStatusStateMachine(GameStatusEnum.ReadyToStart);
   }
 
-  public void MakeAMatch()
+  public void CreateAMatch()
   {
-    //TODO: Match Should be Created as per Match Selection in UI i.e.
     match = matchCreator.CreateMatch();
-    gameStatusStateMachine.ChangeGameStatus(GameStatusEnum.GameBegun);
+    StartAGame();
   }
 
   public void UpdateScore(GamePlaySide playerScoredSide)
   {
-    //scoreBoard.UpdateScore(playerScoredSide, match.ScoreUpdate(playerScoredSide));
+    if (match.IsMatchFinished == false)// For score update
+    {
+      int scoreBoardEntryToUpdate = match.ScoreUpdate(playerScoredSide);
+      scoreBoard.UpdateScore(playerScoredSide, scoreBoardEntryToUpdate);
+    }
+
+    CheckToSeeIsTheMatchFinished();
+  }
+
+  private void CheckToSeeIsTheMatchFinished()
+  {
+    if (match.IsMatchFinished == true)
+    {
+      gameStatusStateMachine.ChangeGameStatus(GameStatusEnum.GameFinished);
+      Debug.Log("Game Finished!!");
+    }
+  }
+
+  private void StartAGame()
+  {
+    gameStatusStateMachine.ChangeGameStatus(GameStatusEnum.GameBegun);
   }
 
 }

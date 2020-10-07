@@ -15,7 +15,7 @@ public class ScoreMaintainer
   int maximumScoreToWin = 0;
 
   public Dictionary<PlayerId, int> PlayersIdnScore => playersIdnScore;
-  public bool IsGameOverFlag { get; private set; } = false;
+  public bool IsThereAWinner { get; private set; } = false;
 
   public void SwitchSide()
   {
@@ -39,7 +39,7 @@ public class ScoreMaintainer
 
   public int ScoreUpdate(GamePlaySide playerScoredSide)
   {
-    if (IsGameOverFlag) return 0;// 0 means GameOver
+    if (IsThereAWinner == true) return 0;// return 0 when We already Have A Winner
 
     int updatedScore = 0;
 
@@ -48,12 +48,12 @@ public class ScoreMaintainer
       if (playerScoredSide == GamePlaySide.Left)
       {
         updatedScore = ++playersIdnScore[PlayerId.One];
-        IsGameOverFlag = playersIdnScore[PlayerId.One] >= maximumScoreToWin ? true : false;
+        IsThereAWinner = playersIdnScore[PlayerId.One] >= maximumScoreToWin ? true : false;
       }
       else
       {
         updatedScore = ++playersIdnScore[PlayerId.Two];
-        IsGameOverFlag = playersIdnScore[PlayerId.Two] >= maximumScoreToWin ? true : false;
+        IsThereAWinner = playersIdnScore[PlayerId.Two] >= maximumScoreToWin ? true : false;
       }
     }
     else
@@ -61,23 +61,16 @@ public class ScoreMaintainer
       if (playerScoredSide == GamePlaySide.Left)
       {
         updatedScore = ++playersIdnScore[PlayerId.Two];
-        IsGameOverFlag = playersIdnScore[PlayerId.Two] >= maximumScoreToWin ? true : false;
+        IsThereAWinner = playersIdnScore[PlayerId.Two] >= maximumScoreToWin ? true : false;
       }
       else
       {
         updatedScore = ++playersIdnScore[PlayerId.One];
-        IsGameOverFlag = playersIdnScore[PlayerId.One] >= maximumScoreToWin ? true : false;
+        IsThereAWinner = playersIdnScore[PlayerId.One] >= maximumScoreToWin ? true : false;
       }
     }
 
     return updatedScore;
   }
 
-  public void ScoreReset()
-  {
-    foreach (var key in playersIdnScore.Keys.ToList())
-    {
-      playersIdnScore[key] = 0;
-    }
-  }
 }

@@ -15,7 +15,7 @@ namespace Tests
 
       /*Game Completed at this point with L5_R0*/
 
-      Assert.IsTrue(scoreCalculator.IsGameOverFlag);
+      Assert.IsTrue(scoreCalculator.IsThereAWinner);
     }
 
     [Test]
@@ -29,7 +29,7 @@ namespace Tests
 
       /*Game Completed at this point with L0_R5*/
 
-      Assert.IsTrue(scoreCalculator.IsGameOverFlag);
+      Assert.IsTrue(scoreCalculator.IsThereAWinner);
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Tests
 
       /*Game Completed at this point with L5_R3*/
 
-      Assert.IsTrue(scoreCalculator.IsGameOverFlag);
+      Assert.IsTrue(scoreCalculator.IsThereAWinner);
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Tests
 
       /*Game Didn't Complete at this point with L3_R2*/
 
-      Assert.IsFalse(scoreCalculator.IsGameOverFlag);
+      Assert.IsFalse(scoreCalculator.IsThereAWinner);
     }
 
     [Test]

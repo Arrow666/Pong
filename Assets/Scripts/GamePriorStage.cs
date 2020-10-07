@@ -25,7 +25,7 @@ public class GamePriorStage : MonoBehaviour
   private void StartGameMode()
   {
     gameModeSelector.StartGameMode();
-    gameManager.MakeAMatch();
+    gameManager.CreateAMatch();
   }
 
 

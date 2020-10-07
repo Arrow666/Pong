@@ -3,20 +3,35 @@ using UnityEngine.UI;
 
 public class ScoreBoardDisplay : MonoBehaviour
 {
-  public Text gameStatusText;// To display "Paused", "Win", "Lose" literals
-  public Text playerLeftText;
-  public Text playerRightText;
+  public Text leftPlayerScoreText;
+  public Text rightPlayerScoreText;
+
+  private void OnEnable()
+  {
+    GameBegunState.onStateEntered += () => ResetScore();
+  }
 
   public void UpdateScore(GamePlaySide playSide, int score)
   {
     switch (playSide)
     {
       case GamePlaySide.Left:
-        playerLeftText.text = score.ToString();
+        rightPlayerScoreText.text = score.ToString();
         break;
       case GamePlaySide.Right:
-        playerRightText.text = score.ToString();
+        leftPlayerScoreText.text = score.ToString();
         break;
     }
   }
+  public void ResetScore()
+  {
+    rightPlayerScoreText.text = "0";
+    leftPlayerScoreText.text = "0";
+  }
+
+  private void OnDisable()
+  {
+    GameBegunState.onStateEntered -= () => ResetScore();
+  }
+
 }

@@ -23,10 +23,27 @@ public class BotPaddleNormal : MonoBehaviour, IPaddle
   private void Start()
   {
     movementBounds = 5 - (transform.localScale.y * 0.5f);
-    gameObjectToFollow = FindObjectOfType<Ball>().gameObject;
-    if (gameObjectToFollow == null)
+    var ball = FindObjectOfType<Ball>();
+    if (ball == null)
     {
       Debug.LogError($"NO GameObjectToFollow", this);
+      InvokeRepeating("SearchForTheBall", 0.1f, 0.1f);
+      return;
+    }
+    gameObjectToFollow = ball.gameObject;
+  }
+
+  private void SearchForTheBall()
+  {
+    if (gameObjectToFollow == null)
+    {
+      var ball = FindObjectOfType<Ball>();
+      if (ball == null)
+      {
+        Debug.LogWarning($"Searching for GameObjectToFollow...", this);
+        return;
+      }
+      gameObjectToFollow = ball.gameObject;
     }
   }
 

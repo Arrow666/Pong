@@ -7,10 +7,12 @@ public class SinglePlayerMatch : IMatch
   readonly Dictionary<PlayerId, Player> players;
   readonly Vector3[] playerSpawnPositions;
 
-  public SinglePlayerMatch(SinglePlayerMatchModeStructure sp_MatchModeStructure, Vector3[] playerSpawnPositions)
+  public bool IsMatchFinished { get; private set; }
+
+  public SinglePlayerMatch(SinglePlayerMatchModeStructure sp_MatchModeStructure, Vector3[] _playerSpawnPositions)
   {
     players = new Dictionary<PlayerId, Player>();
-    this.playerSpawnPositions = playerSpawnPositions;
+    playerSpawnPositions = _playerSpawnPositions;
 
 
     if (sp_MatchModeStructure.playSide == GamePlaySide.Left)
@@ -74,12 +76,13 @@ public class SinglePlayerMatch : IMatch
 
   public int ScoreUpdate(GamePlaySide playerScoredSide)
   {
-    return scoreMaintainer.ScoreUpdate(playerScoredSide);
+    int scoreToUpdate = scoreMaintainer.ScoreUpdate(playerScoredSide);
+    if (scoreMaintainer.IsThereAWinner == true)
+    {
+      IsMatchFinished = true;
+    }
+    return scoreToUpdate;
   }
 
-  public void ScoreReset()
-  {
-    scoreMaintainer.ScoreReset();
-  }
 }
 
