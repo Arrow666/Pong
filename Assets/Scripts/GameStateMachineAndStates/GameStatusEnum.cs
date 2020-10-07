@@ -3,7 +3,7 @@
   None,
   ReadyToStart,
   GameBegun,
-  GameResume,
+  GameRunning,
   GamePaused,
   GameFinished
 }

@@ -17,6 +17,15 @@ public class GamePriorStage : MonoBehaviour
     standaloneGameSelectionInputDetector.enterKeyInput += () => StartGameMode();
   }
 
+  private void OnDisable()
+  {
+    GameReadyToStartState.onStateEntered -= () => Activate();
+    GameReadyToStartState.onStateExit -= () => DeActivate();
+
+    standaloneGameSelectionInputDetector.verticalKeyInput -= () => ChangeGameMode();
+    standaloneGameSelectionInputDetector.enterKeyInput -= () => StartGameMode();
+  }
+
   private void ChangeGameMode()
   {
     gameModeSelector.ChangeGameMode();
@@ -41,13 +50,5 @@ public class GamePriorStage : MonoBehaviour
     gameSelectionWindowView.DeActivateWindow();
   }
 
-  private void OnDisable()
-  {
-    GameReadyToStartState.onStateEntered -= () => Activate();
-    GameReadyToStartState.onStateExit -= () => DeActivate();
-
-    standaloneGameSelectionInputDetector.verticalKeyInput -= () => ChangeGameMode();
-    standaloneGameSelectionInputDetector.enterKeyInput -= () => StartGameMode();
-  }
 
 }

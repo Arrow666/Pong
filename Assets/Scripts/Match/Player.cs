@@ -2,9 +2,9 @@
 
 public struct Player
 {
-  PlayerId playerId;
-  GamePlaySide playSide;
-  GameObject playerGameObject;
+  public PlayerId playerId;
+  public GamePlaySide playSide;
+  public GameObject playerGameObject;
   //TODO: Controller whether bot or player
 
   public Player(PlayerId playerId, GameObject playerGameObject, GamePlaySide playSide)
@@ -15,7 +15,3 @@ public struct Player
   }
 }
 
-public struct PlayerScoreStatus
-{
-  
-}

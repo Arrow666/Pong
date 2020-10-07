@@ -3,11 +3,15 @@
 public class GameBeganStage : MonoBehaviour
 {
   [SerializeField] GameBeganWindowView gameBeganWindowView;
-  [SerializeField] GameManager gameManager;
 
   private void OnEnable()
   {
     GameBegunState.onStateEntered += () => Activate();
+  }
+
+  private void OnDisable()
+  {
+    GameBegunState.onStateEntered -= () => Activate();
   }
 
   private void Activate()
@@ -15,8 +19,4 @@ public class GameBeganStage : MonoBehaviour
     gameBeganWindowView.ActivateWindow();
   }
 
-  private void OnDisable()
-  {
-    GameBegunState.onStateEntered -= () => Activate();
-  }
 }

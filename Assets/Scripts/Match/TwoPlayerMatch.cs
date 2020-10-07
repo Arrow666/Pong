@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TwoPlayerMatch : IMatch
@@ -18,7 +19,9 @@ public class TwoPlayerMatch : IMatch
     if (tp_MatchModeStructure.playSide == GamePlaySide.Left)
     {
       var playerOneGObj = GameObject.Instantiate(tp_MatchModeStructure.playerToSpawn, playerSpawnPositions[0], Quaternion.identity);
+      playerOneGObj.name = "PlayerLeft";
       var playerTwoGObj = GameObject.Instantiate(tp_MatchModeStructure.playerToSpawn, playerSpawnPositions[1], Quaternion.identity);
+      playerTwoGObj.name = "PlayerRight";
 
       Player playerOne = new Player(PlayerId.One, playerOneGObj, GamePlaySide.Left);
       Player playerTwo = new Player(PlayerId.Two, playerTwoGObj, GamePlaySide.Right);
@@ -34,7 +37,9 @@ public class TwoPlayerMatch : IMatch
     else
     {
       var playerOneGObj = GameObject.Instantiate(tp_MatchModeStructure.playerToSpawn, playerSpawnPositions[1], Quaternion.identity);
+      playerOneGObj.name = "PlayerRight";
       var playerTwoGObj = GameObject.Instantiate(tp_MatchModeStructure.playerToSpawn, playerSpawnPositions[0], Quaternion.identity);
+      playerTwoGObj.name = "PlayerLeft";
 
       Player playerOne = new Player(PlayerId.One, playerOneGObj, GamePlaySide.Right);
       Player playerTwo = new Player(PlayerId.Two, playerTwoGObj, GamePlaySide.Left);
@@ -58,6 +63,21 @@ public class TwoPlayerMatch : IMatch
       IsMatchFinished = true;
     }
     return scoreToUpdate;
+  }
+
+  public void ResetPositions()
+  {
+    foreach (Player player in players.Values.ToList())
+    {
+      if (player.playSide == GamePlaySide.Left)
+      {
+        player.playerGameObject.transform.position = playerSpawnPositions[0];// Left
+      }
+      else
+      {
+        player.playerGameObject.transform.position = playerSpawnPositions[1];// Right
+      }
+    }
   }
 
 }

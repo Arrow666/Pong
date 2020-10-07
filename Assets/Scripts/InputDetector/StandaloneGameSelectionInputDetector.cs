@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class StandaloneGameSelectionInputDetector : MonoBehaviour
 {
-
   public event Action verticalKeyInput;
   public event Action enterKeyInput;
 

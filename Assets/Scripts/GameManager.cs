@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
   [SerializeField] ScoreBoardDisplay scoreBoard;
   [SerializeField] MatchCreator matchCreator;
   GameStatusStateMachine gameStatusStateMachine;
+  [SerializeField] BallServicer ballServicer;
   IMatch match;
 
   private void Start()
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour
     {
       int scoreBoardEntryToUpdate = match.ScoreUpdate(playerScoredSide);
       scoreBoard.UpdateScore(playerScoredSide, scoreBoardEntryToUpdate);
+      match.ResetPositions();
+      ballServicer.ServeTheNextBall();
     }
 
     CheckToSeeIsTheMatchFinished();

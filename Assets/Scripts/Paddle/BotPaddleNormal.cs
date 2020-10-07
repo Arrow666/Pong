@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class BotPaddleHard : MonoBehaviour, IPaddle
+public class BotPaddleNormal : MonoBehaviour, IPaddle
 {
   public float movementSpeed = 8;
   public GameObject gameObjectToFollow;
@@ -45,6 +44,13 @@ public class BotPaddleHard : MonoBehaviour, IPaddle
       }
       gameObjectToFollow = ball.gameObject;
     }
+    else
+    {
+      if (gameObjectToFollow.activeInHierarchy == false)
+      {
+        gameObjectToFollow = null;
+      }
+    }
   }
 
   private void Update()
@@ -69,18 +75,12 @@ public class BotPaddleHard : MonoBehaviour, IPaddle
     movementDirection = 0;
     if (gameObjectToFollow.transform.position.y > myRigidBody.position.y + 0.1f)
     {
-      movementDirection += 1;
+      movementDirection = 1;
     }
     if (gameObjectToFollow.transform.position.y < myRigidBody.position.y - 0.1f)
     {
-      movementDirection -= 1;
+      movementDirection = -1;
     }
-
-    if (Mathf.Abs(gameObjectToFollow.transform.position.x) > 7.5f)
-    {
-      movementDirection *= -1;
-    }
-
   }
 
   private void PerformMovement()
@@ -106,4 +106,5 @@ public class BotPaddleHard : MonoBehaviour, IPaddle
   }
 
 }
+
 

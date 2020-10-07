@@ -15,7 +15,7 @@ public class Ball : MonoBehaviour
 
   private void Start()
   {
-    movementDirection = new Vector2(1,1);
+    movementDirection = new Vector2(1, 0);
     myRigidBody.velocity = movementDirection * movementSpeed;
   }
 
@@ -25,7 +25,7 @@ public class Ball : MonoBehaviour
     Vector2 reflectedDirection = Vector2.Reflect(movementDirection, contactPoint2D.normal);
     IPaddle paddle = collision.collider.GetComponent<IPaddle>();
 
-    if(paddle != null)
+    if (paddle != null)
     {
       if (paddle.Velocity.y > 0)
       {

@@ -24,5 +24,6 @@ public class ScoreBounds : MonoBehaviour
     {
       gameManager.UpdateScore(GamePlaySide.Right);
     }
+    collision.gameObject.SetActive(false);
   }
 }

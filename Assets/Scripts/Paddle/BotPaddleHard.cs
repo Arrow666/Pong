@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BotPaddleEasy : MonoBehaviour, IPaddle
+public class BotPaddleHard : MonoBehaviour, IPaddle
 {
   public float movementSpeed = 8;
   public GameObject gameObjectToFollow;
@@ -14,8 +14,6 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
 
   private Rigidbody2D myRigidBody;
   private Vector2 velocity;
-  private IEnumerator calculationCoroutine;
-
 
   private void Awake()
   {
@@ -33,8 +31,6 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
       return;
     }
     gameObjectToFollow = ball.gameObject;
-    calculationCoroutine = IrregularCalculateDirection();
-    StartCoroutine(calculationCoroutine);
   }
 
   private void SearchForTheBall()
@@ -48,20 +44,21 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
         return;
       }
       gameObjectToFollow = ball.gameObject;
-      calculationCoroutine = IrregularCalculateDirection();
-      StartCoroutine(calculationCoroutine);
+    }
+    else
+    {
+      if (gameObjectToFollow.activeInHierarchy == false)
+      {
+        gameObjectToFollow = null;
+      }
     }
   }
 
-  IEnumerator IrregularCalculateDirection()
+  private void Update()
   {
-    while (gameObjectToFollow != null)
-    {
-      CalculateMoveDirection();
-      yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));//Following Duration
-      movementDirection = 0;
-      yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));//No movement Duration
-    }
+    if (gameObjectToFollow == null)
+      return;
+    CalculateMoveDirection();
   }
 
   private void FixedUpdate()
@@ -77,14 +74,20 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
   private void CalculateMoveDirection()
   {
     movementDirection = 0;
-    if (gameObjectToFollow.transform.position.y > myRigidBody.position.y)
+    if (gameObjectToFollow.transform.position.y > myRigidBody.position.y + 0.1f)
     {
       movementDirection += 1;
     }
-    if (gameObjectToFollow.transform.position.y < myRigidBody.position.y)
+    if (gameObjectToFollow.transform.position.y < myRigidBody.position.y - 0.1f)
     {
       movementDirection -= 1;
     }
+
+    if (Mathf.Abs(gameObjectToFollow.transform.position.x) > 7.5f)
+    {
+      movementDirection *= -1;
+    }
+
   }
 
   private void PerformMovement()
@@ -110,3 +113,4 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
   }
 
 }
+
