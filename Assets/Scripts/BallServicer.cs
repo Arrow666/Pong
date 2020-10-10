@@ -22,21 +22,21 @@ public class BallServicer : MonoBehaviour
     delayServiceWaitForSeconds = new WaitForSeconds(firstServiceDelayTime);
     delayinBetweenServiceWaitForSeconds = new WaitForSeconds(inBetweenServiceDelayTime);
 
-    GameBegunState.onStateEntered += () => StartService();
-    GameBegunState.onStateExit += () => StopService();
+    GameBegunState.onStateEntered += StartService;
+    GameBegunState.onStateExit += StopService;
 
-    GameRunningState.onStateEntered += () => InBetweenService();
-    GameRunningState.onStateExit += () => StopInBetweenService();
+    GameRunningState.onStateEntered += InBetweenService;
+    GameRunningState.onStateExit += StopInBetweenService;
   }
 
 
   private void OnDisable()
   {
-    GameBegunState.onStateEntered -= () => StartService();
-    GameBegunState.onStateExit -= () => StopService();
+    GameBegunState.onStateEntered -= StartService;
+    GameBegunState.onStateExit -= StopService;
 
-    GameRunningState.onStateEntered -= () => InBetweenService();
-    GameRunningState.onStateExit -= () => StopInBetweenService();
+    GameRunningState.onStateEntered -= InBetweenService;
+    GameRunningState.onStateExit -= StopInBetweenService;
   }
 
   public void ServeTheNextBall(GamePlaySide lastPlayerScoredSide)
@@ -99,7 +99,7 @@ public class BallServicer : MonoBehaviour
 
   private void SetBallLaunchDirection(GamePlaySide lastPlayerScoredSide)
   {
-    if(lastPlayerScoredSide == GamePlaySide.Left)
+    if (lastPlayerScoredSide == GamePlaySide.Left)
     {
       ballLaunchDirection = new Vector2(1, 0);
     }

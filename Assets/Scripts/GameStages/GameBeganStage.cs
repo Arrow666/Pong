@@ -6,14 +6,16 @@ public class GameBeganStage : MonoBehaviour
 
   private void OnEnable()
   {
-    GameBegunState.onStateEntered += () => Activate();
-    GameReadyToStartState.onStateEntered += () => DeActivate();
+    GameBegunState.onStateEntered += Activate;
+    GameReadyToStartState.onStateEntered += DeActivate;
+    GameFinishedState.onStateEntered += DeActivate;
   }
 
   private void OnDisable()
   {
-    GameBegunState.onStateEntered -= () => Activate();
-    GameReadyToStartState.onStateEntered -= () => DeActivate();
+    GameBegunState.onStateEntered -= Activate;
+    GameReadyToStartState.onStateEntered -= DeActivate;
+    GameFinishedState.onStateEntered -= DeActivate;
   }
 
   private void Activate()

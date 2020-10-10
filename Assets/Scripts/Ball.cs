@@ -14,6 +14,21 @@ public class Ball : MonoBehaviour
     myRigidBody = GetComponent<Rigidbody2D>();
   }
 
+  private void OnEnable()
+  {
+    GameReadyToStartState.onStateEntered += DeActivateBall;
+  }
+
+  private void OnDisable()
+  {
+    GameReadyToStartState.onStateEntered -= DeActivateBall;
+  }
+
+  void DeActivateBall()
+  {
+    gameObject.SetActive(false);
+  }
+
   private void Start()
   {
     currentMoveSpeed = startingMovementSpeed;

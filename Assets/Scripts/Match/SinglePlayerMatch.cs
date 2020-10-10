@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SinglePlayerMatch : IMatch
+public class SinglePlayerMatch : IMatch, IDisposable
 {
   readonly ScoreMaintainer scoreMaintainer;
-  readonly Dictionary<PlayerId, Player> players;
+  readonly List<Player> players;
   readonly Vector3[] playerSpawnPositions;// 0 index is for leftSide and 1 index vice versa
 
   public bool IsMatchFinished { get; private set; }
 
   public SinglePlayerMatch(SinglePlayerMatchModeStructure sp_MatchModeStructure, Vector3[] _playerSpawnPositions)
   {
-    players = new Dictionary<PlayerId, Player>();
+    players = new List<Player>();
     playerSpawnPositions = _playerSpawnPositions;
 
 
@@ -30,8 +31,8 @@ public class SinglePlayerMatch : IMatch
 
       CreateBot(sp_MatchModeStructure, botGObj, GamePlaySide.Right);
 
-      players.Add(PlayerId.One, player);
-      players.Add(PlayerId.Two, botPlayer);
+      players.Add(player);
+      players.Add(botPlayer);
 
       scoreMaintainer = new ScoreMaintainer(sp_MatchModeStructure.maxScoreToWin);
     }
@@ -49,12 +50,13 @@ public class SinglePlayerMatch : IMatch
 
       CreateBot(sp_MatchModeStructure, botGObj, GamePlaySide.Left);
 
-      players.Add(PlayerId.One, player);
-      players.Add(PlayerId.Two, botPlayer);
+      players.Add(player);
+      players.Add(botPlayer);
 
       scoreMaintainer = new ScoreMaintainer(sp_MatchModeStructure.maxScoreToWin, true);
     }
 
+    GameReadyToStartState.onStateEntered += DestroyPaddles;
   }
 
   private void CreateBot(SinglePlayerMatchModeStructure sp_MatchModeStructure, GameObject botGObj, GamePlaySide botToPlaySide)
@@ -85,9 +87,9 @@ public class SinglePlayerMatch : IMatch
 
   public void ResetPositionsForNextTurn()
   {
-    foreach (Player player in players.Values.ToList())
+    foreach (var player in players)
     {
-      if(player.playSide == GamePlaySide.Left)
+      if (player.playSide == GamePlaySide.Left)
       {
         player.playerGameObject.transform.position = playerSpawnPositions[0];// Left
       }
@@ -96,6 +98,50 @@ public class SinglePlayerMatch : IMatch
         player.playerGameObject.transform.position = playerSpawnPositions[1];// Right
       }
     }
+  }
+
+  public GameScore GetFinalMatchScore()
+  {
+    GameScore gameScore = new GameScore();
+
+    foreach (var player in players)
+    {
+      if (player.playSide == GamePlaySide.Left)
+      {
+        gameScore.leftPlayerName = player.playerGameObject.name;// Left player
+        gameScore.leftPlayerScore = scoreMaintainer.PlayersIdnScore[player.playerId].ToString();
+      }
+      else
+      {
+        gameScore.rightPlayerName = player.playerGameObject.name;// Right
+        gameScore.rightPlayerScore = scoreMaintainer.PlayersIdnScore[player.playerId].ToString();
+      }
+    }
+
+    gameScore.totalScore = scoreMaintainer.MaximumScoreToWin.ToString();
+    gameScore.playerNameWhoWon = players.Where(x => x.playerId == scoreMaintainer.GetWinnerId()).FirstOrDefault().playerGameObject.name;
+
+    DestroyPaddles();
+
+    return gameScore;
+
+  }
+
+  void DestroyPaddles()
+  {
+    foreach (var player in players)
+    {
+      if (player.playerGameObject != null)
+      {
+        GameObject.Destroy(player.playerGameObject);
+      }
+    }
+  }
+
+  public void Dispose()
+  {
+    GameReadyToStartState.onStateEntered -= DestroyPaddles;
+    Debug.Log($"Dispsed");
   }
 
 }

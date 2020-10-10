@@ -8,24 +8,24 @@ public class GamePausedStage : MonoBehaviour
 
   private void OnEnable()
   {
-    GamePauseState.onStateEntered += () => Activate();
-    GamePauseState.onStateExit += () => DeActivate();
+    GamePauseState.onStateEntered += Activate;
+    GamePauseState.onStateExit += DeActivate;
 
-    GameBegunState.onStateEntered += () => ActivateInputDetector();
-    GameFinishedState.onStateEntered += () => DeActivateInputDetector();
+    GameBegunState.onStateEntered += ActivateInputDetector;
+    GameFinishedState.onStateEntered += DeActivateInputDetector;
 
-    standaloneGamePausedInputDetector.escapeKeyInput += () => PauseUnpause();
+    standaloneGamePausedInputDetector.escapeKeyInput += PauseUnpause;
   }
 
   private void OnDisable()
   {
-    GamePauseState.onStateEntered -= () => Activate();
-    GamePauseState.onStateExit -= () => DeActivate();
+    GamePauseState.onStateEntered -= Activate;
+    GamePauseState.onStateExit -= DeActivate;
 
-    GameBegunState.onStateEntered -= () => ActivateInputDetector();
-    GameFinishedState.onStateEntered -= () => DeActivateInputDetector();
+    GameBegunState.onStateEntered -= ActivateInputDetector;
+    GameFinishedState.onStateEntered -= DeActivateInputDetector;
 
-    standaloneGamePausedInputDetector.escapeKeyInput -= () => PauseUnpause();
+    standaloneGamePausedInputDetector.escapeKeyInput -= PauseUnpause;
   }
 
   private void Start()

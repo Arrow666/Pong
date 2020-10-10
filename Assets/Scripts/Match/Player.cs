@@ -15,3 +15,15 @@ public struct Player
   }
 }
 
+public struct GameScore
+{
+  public string leftPlayerName;
+  public string leftPlayerScore;
+
+  public string rightPlayerName;
+  public string rightPlayerScore;
+
+  public string playerNameWhoWon;
+
+  public string totalScore;
+}

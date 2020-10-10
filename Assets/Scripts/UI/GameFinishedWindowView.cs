@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GamePausedWindowView : MonoBehaviour
+public class GameFinishedWindowView : MonoBehaviour
 {
   public WindowViewClass windowView;
   public BackToHomeButton backToHomeButton;
@@ -9,7 +9,7 @@ public class GamePausedWindowView : MonoBehaviour
   {
     if (windowView == null)
     {
-      Debug.LogError($"GamePausedWindowView : windowView is not set in inspector", this);
+      Debug.LogError($"GameFinishedWindowView : windowView is not set in inspector", this);
     }
   }
 

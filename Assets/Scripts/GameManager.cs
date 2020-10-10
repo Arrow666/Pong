@@ -8,18 +8,8 @@ public class MaxScoreList
 
 public class GameManager : MonoBehaviour
 {
-
-  //CheckList:
-  /*
-   * Win/Lose logic
-   * Game modes for bot, PvP(Single Player, Two Player)
-   * Difficulty options for bots Easy/Normal/Hard
-   * Options to select Maximum wins
-   * Selection for side Left/Right
-   * Leader board
-   */
-
-  [SerializeField] ScoreBoardDisplay scoreBoard;
+  [SerializeField] GameRunningScoreBoardDisplay gameRunningScoreBoardDisplay;
+  [SerializeField] GameFinishedScoreBoardDisplay gameFinishedScoreBoardDisplay;
   [SerializeField] MatchCreator matchCreator;
   GameStatusStateMachine gameStatusStateMachine;
   [SerializeField] BallServicer ballServicer;
@@ -41,7 +31,7 @@ public class GameManager : MonoBehaviour
     if (match.IsMatchFinished == false)// For score update
     {
       int scoreBoardEntryToUpdate = match.ScoreUpdate(playerScoredSide);
-      scoreBoard.UpdateScore(playerScoredSide, scoreBoardEntryToUpdate);
+      gameRunningScoreBoardDisplay.UpdateScore(playerScoredSide, scoreBoardEntryToUpdate);
       match.ResetPositionsForNextTurn();
       ballServicer.ServeTheNextBall(playerScoredSide);
     }
@@ -53,6 +43,8 @@ public class GameManager : MonoBehaviour
   {
     if (match.IsMatchFinished == true)
     {
+      GameScore finalGameScore = match.GetFinalMatchScore();
+      gameFinishedScoreBoardDisplay.SetGameScore(finalGameScore);
       gameStatusStateMachine.ChangeGameStatus(GameStatusEnum.GameFinished);
       Debug.Log("Game Finished!!");
     }

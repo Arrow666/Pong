@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TwoPlayerMatch : IMatch
+public class TwoPlayerMatch : IMatch, IDisposable
 {
   readonly ScoreMaintainer scoreMaintainer;
-  readonly Dictionary<PlayerId, Player> players;
+  readonly List<Player> players;
   readonly Vector3[] playerSpawnPositions;
 
   public bool IsMatchFinished { get; private set; }
 
   public TwoPlayerMatch(TwoPlayerMatchModeStructure tp_MatchModeStructure, Vector3[] _playerSpawnPositions)
   {
-    players = new Dictionary<PlayerId, Player>();
+    players = new List<Player>();
     playerSpawnPositions = _playerSpawnPositions;
 
 
@@ -29,8 +30,8 @@ public class TwoPlayerMatch : IMatch
       playerOneGObj.AddComponent<Paddle>().playSide = GamePlaySide.Left;
       playerTwoGObj.AddComponent<Paddle>().playSide = GamePlaySide.Right;
 
-      players.Add(PlayerId.One, playerOne);
-      players.Add(PlayerId.Two, playerTwo);
+      players.Add(playerOne);
+      players.Add(playerTwo);
 
       scoreMaintainer = new ScoreMaintainer(tp_MatchModeStructure.maxScoreToWin);
     }
@@ -47,8 +48,8 @@ public class TwoPlayerMatch : IMatch
       playerOneGObj.AddComponent<Paddle>().playSide = GamePlaySide.Right;
       playerTwoGObj.AddComponent<Paddle>().playSide = GamePlaySide.Left;
 
-      players.Add(PlayerId.One, playerOne);
-      players.Add(PlayerId.Two, playerTwo);
+      players.Add(playerOne);
+      players.Add(playerTwo);
 
       scoreMaintainer = new ScoreMaintainer(tp_MatchModeStructure.maxScoreToWin, true);
     }
@@ -67,7 +68,8 @@ public class TwoPlayerMatch : IMatch
 
   public void ResetPositionsForNextTurn()
   {
-    foreach (Player player in players.Values.ToList())
+
+    foreach (var player in players)
     {
       if (player.playSide == GamePlaySide.Left)
       {
@@ -77,7 +79,52 @@ public class TwoPlayerMatch : IMatch
       {
         player.playerGameObject.transform.position = playerSpawnPositions[1];// Right
       }
+
     }
+
+  }
+
+  public GameScore GetFinalMatchScore()
+  {
+    GameScore gameScore = new GameScore();
+
+    foreach (var player in players)
+    {
+      if (player.playSide == GamePlaySide.Left)
+      {
+        gameScore.leftPlayerName = player.playerGameObject.name;// Left player
+        gameScore.leftPlayerScore = scoreMaintainer.PlayersIdnScore[player.playerId].ToString();
+      }
+      else
+      {
+        gameScore.rightPlayerName = player.playerGameObject.name;// Right
+        gameScore.rightPlayerScore = scoreMaintainer.PlayersIdnScore[player.playerId].ToString();
+      }
+    }
+
+    gameScore.totalScore = scoreMaintainer.MaximumScoreToWin.ToString();
+    gameScore.playerNameWhoWon = players.Where(x => x.playerId == scoreMaintainer.GetWinnerId()).FirstOrDefault().playerGameObject.name;
+
+    DestroyPaddles();
+
+    return gameScore;
+
+  }
+
+  void DestroyPaddles()
+  {
+    foreach (var player in players)
+    {
+      if (player.playerGameObject != null)
+      {
+        GameObject.Destroy(player.playerGameObject);
+      }
+    }
+  }
+
+  public void Dispose()
+  {
+    GameReadyToStartState.onStateEntered -= DestroyPaddles;
   }
 
 }

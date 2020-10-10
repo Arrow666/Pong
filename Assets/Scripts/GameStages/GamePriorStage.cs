@@ -10,20 +10,20 @@ public class GamePriorStage : MonoBehaviour
 
   private void OnEnable()
   {
-    GameReadyToStartState.onStateEntered += () => Activate();
-    GameReadyToStartState.onStateExit += () => DeActivate();
+    GameReadyToStartState.onStateEntered += Activate;
+    GameReadyToStartState.onStateExit += DeActivate;
 
-    standaloneGameSelectionInputDetector.verticalKeyInput += () => ChangeGameMode();
-    standaloneGameSelectionInputDetector.enterKeyInput += () => StartGameMode();
+    standaloneGameSelectionInputDetector.verticalKeyInput += ChangeGameMode;
+    standaloneGameSelectionInputDetector.enterKeyInput += StartGameMode;
   }
 
   private void OnDisable()
   {
-    GameReadyToStartState.onStateEntered -= () => Activate();
-    GameReadyToStartState.onStateExit -= () => DeActivate();
+    GameReadyToStartState.onStateEntered -= Activate;
+    GameReadyToStartState.onStateExit -= DeActivate;
 
-    standaloneGameSelectionInputDetector.verticalKeyInput -= () => ChangeGameMode();
-    standaloneGameSelectionInputDetector.enterKeyInput -= () => StartGameMode();
+    standaloneGameSelectionInputDetector.verticalKeyInput -= ChangeGameMode;
+    standaloneGameSelectionInputDetector.enterKeyInput -= StartGameMode;
   }
 
   private void ChangeGameMode()

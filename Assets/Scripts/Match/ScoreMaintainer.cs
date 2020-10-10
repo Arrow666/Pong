@@ -13,6 +13,7 @@ public class ScoreMaintainer
   Dictionary<PlayerId, int> playersIdnScore;
 
   int maximumScoreToWin = 0;
+  public int MaximumScoreToWin => maximumScoreToWin;
 
   public Dictionary<PlayerId, int> PlayersIdnScore => playersIdnScore;
   public bool IsThereAWinner { get; private set; } = false;
@@ -71,6 +72,14 @@ public class ScoreMaintainer
     }
 
     return updatedScore;
+  }
+
+  public PlayerId GetWinnerId()
+  {
+    int playerOneScore = playersIdnScore[PlayerId.One];
+    int playerTwoScore = playersIdnScore[PlayerId.Two];
+
+    return (playerOneScore > playerTwoScore) ? PlayerId.One : PlayerId.Two;
   }
 
 }

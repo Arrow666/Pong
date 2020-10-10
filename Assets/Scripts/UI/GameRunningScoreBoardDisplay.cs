@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreBoardDisplay : MonoBehaviour
+public class GameRunningScoreBoardDisplay : MonoBehaviour
 {
   public Text leftPlayerScoreText;
   public Text rightPlayerScoreText;
