@@ -18,11 +18,11 @@ public class ScoreBounds : MonoBehaviour
   {
     if (leftBound == true)
     {
-      gameManager.UpdateScore(GamePlaySide.Left);
+      gameManager.UpdateScore(GamePlaySide.Right);// Right Player Scored
     }
     else
     {
-      gameManager.UpdateScore(GamePlaySide.Right);
+      gameManager.UpdateScore(GamePlaySide.Left);// Left Player Scored
     }
     collision.gameObject.SetActive(false);
   }

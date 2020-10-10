@@ -3,6 +3,7 @@
 public class GamePausedWindowView : MonoBehaviour
 {
   public WindowViewClass windowView;
+  public BackToHomeButton backToHomeButton;
 
   private void OnEnable()
   {
@@ -10,6 +11,17 @@ public class GamePausedWindowView : MonoBehaviour
     {
       Debug.LogError($"GamePausedWindowView : windowView is not set in inspector", this);
     }
+  }
+
+  private void Start()
+  {
+    backToHomeButton.button.onClick.AddListener(() => GoHome());
+  }
+
+  private void GoHome()
+  {
+    Debug.Log("Back to Home");
+    GameStatusStatesFactory.GetGameStateMachine().ChangeGameStatus(GameStatusEnum.ReadyToStart);
   }
 
   public void ActivateWindow()

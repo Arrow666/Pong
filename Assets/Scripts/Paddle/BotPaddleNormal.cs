@@ -32,6 +32,11 @@ public class BotPaddleNormal : MonoBehaviour, IPaddle
     gameObjectToFollow = ball.gameObject;
   }
 
+  private void OnDisable()
+  {
+    CancelInvoke("SearchForTheBall");// Stop Invoking searching ball when botPaddle is turned off
+  }
+
   private void SearchForTheBall()
   {
     if (gameObjectToFollow == null)

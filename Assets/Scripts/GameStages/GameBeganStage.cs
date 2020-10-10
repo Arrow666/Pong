@@ -7,16 +7,23 @@ public class GameBeganStage : MonoBehaviour
   private void OnEnable()
   {
     GameBegunState.onStateEntered += () => Activate();
+    GameReadyToStartState.onStateEntered += () => DeActivate();
   }
 
   private void OnDisable()
   {
     GameBegunState.onStateEntered -= () => Activate();
+    GameReadyToStartState.onStateEntered -= () => DeActivate();
   }
 
   private void Activate()
   {
     gameBeganWindowView.ActivateWindow();
+  }
+
+  private void DeActivate()
+  {
+    gameBeganWindowView.DeActivateWindow();
   }
 
 }

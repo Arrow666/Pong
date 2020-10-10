@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class BallServicer : MonoBehaviour
 {
-  [SerializeField] float firstServiceDelayTime = 2f;
+  [SerializeField] float firstServiceDelayTime = 3f;
   [SerializeField] float inBetweenServiceDelayTime = 1f;
+  [SerializeField] CountDownOnGameToBegun countDownOnGameToBegun;
   [SerializeField] Ball ballPrefab;
   [HideInInspector] public bool ballIsServed = false;
+  Ball currentBall;
+  Vector2 ballLaunchDirection;
 
   WaitForSeconds delayServiceWaitForSeconds;
   WaitForSeconds delayinBetweenServiceWaitForSeconds;
@@ -36,16 +39,20 @@ public class BallServicer : MonoBehaviour
     GameRunningState.onStateExit -= () => StopInBetweenService();
   }
 
-  public void ServeTheNextBall()
+  public void ServeTheNextBall(GamePlaySide lastPlayerScoredSide)
   {
     ballIsServed = false;
+    SetBallLaunchDirection(lastPlayerScoredSide);
     InBetweenService();
   }
+
 
   private void StartService()
   {
     startServiceRoutine = StartServiceCounterCoroutine();
     StartCoroutine(startServiceRoutine);
+
+    countDownOnGameToBegun.DisplayCountDown(firstServiceDelayTime);
   }
 
   private void InBetweenService()
@@ -63,6 +70,8 @@ public class BallServicer : MonoBehaviour
     {
       StopCoroutine(startServiceRoutine);
     }
+
+    countDownOnGameToBegun.StopCountDown();
   }
 
   private void StopInBetweenService()
@@ -76,7 +85,7 @@ public class BallServicer : MonoBehaviour
   IEnumerator StartServiceCounterCoroutine()
   {
     yield return delayServiceWaitForSeconds;
-    Instantiate(ballPrefab);
+    currentBall = Instantiate(ballPrefab);
     ballIsServed = true;
     GameStatusStatesFactory.GetGameStateMachine().ChangeGameStatus(GameStatusEnum.GameRunning);
   }
@@ -84,8 +93,20 @@ public class BallServicer : MonoBehaviour
   IEnumerator InBetweenServiceCounterCoroutine()
   {
     yield return delayinBetweenServiceWaitForSeconds;
-    Instantiate(ballPrefab);
+    currentBall.SetMoveDirection(ballLaunchDirection);
     ballIsServed = true;
+  }
+
+  private void SetBallLaunchDirection(GamePlaySide lastPlayerScoredSide)
+  {
+    if(lastPlayerScoredSide == GamePlaySide.Left)
+    {
+      ballLaunchDirection = new Vector2(1, 0);
+    }
+    else
+    {
+      ballLaunchDirection = new Vector2(-1, 0);
+    }
   }
 
 }

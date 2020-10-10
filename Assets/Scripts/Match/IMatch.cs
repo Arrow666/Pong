@@ -2,5 +2,5 @@
 {
   bool IsMatchFinished { get; }
   int ScoreUpdate(GamePlaySide playerScoredSide);
-  void ResetPositions();
+  void ResetPositionsForNextTurn();
 }

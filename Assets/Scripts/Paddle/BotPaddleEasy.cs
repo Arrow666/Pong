@@ -16,7 +16,6 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
   private Vector2 velocity;
   private IEnumerator calculationCoroutine;
 
-
   private void Awake()
   {
     myRigidBody = GetComponent<Rigidbody2D>();
@@ -37,6 +36,11 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
     StartCoroutine(calculationCoroutine);
   }
 
+  private void OnDisable()
+  {
+    CancelInvoke("SearchForTheBall");// Stop Invoking searching ball when botPaddle is turned off
+  }
+
   private void SearchForTheBall()
   {
     if (gameObjectToFollow == null)
@@ -48,6 +52,10 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
         return;
       }
       gameObjectToFollow = ball.gameObject;
+      if(calculationCoroutine != null)
+      {
+        StopCoroutine(calculationCoroutine);
+      }
       calculationCoroutine = IrregularCalculateDirection();
       StartCoroutine(calculationCoroutine);
     }
@@ -56,6 +64,7 @@ public class BotPaddleEasy : MonoBehaviour, IPaddle
       if (gameObjectToFollow.activeInHierarchy == false)
       {
         gameObjectToFollow = null;
+        StopCoroutine(calculationCoroutine);// Just for safety
       }
     }
   }

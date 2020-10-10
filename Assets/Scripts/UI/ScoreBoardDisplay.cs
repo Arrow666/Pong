@@ -16,10 +16,10 @@ public class ScoreBoardDisplay : MonoBehaviour
     switch (playSide)
     {
       case GamePlaySide.Left:
-        rightPlayerScoreText.text = score.ToString();
+        leftPlayerScoreText.text = score.ToString();
         break;
       case GamePlaySide.Right:
-        leftPlayerScoreText.text = score.ToString();
+        rightPlayerScoreText.text = score.ToString();
         break;
     }
   }

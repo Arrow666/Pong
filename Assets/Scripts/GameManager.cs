@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
     {
       int scoreBoardEntryToUpdate = match.ScoreUpdate(playerScoredSide);
       scoreBoard.UpdateScore(playerScoredSide, scoreBoardEntryToUpdate);
-      match.ResetPositions();
-      ballServicer.ServeTheNextBall();
+      match.ResetPositionsForNextTurn();
+      ballServicer.ServeTheNextBall(playerScoredSide);
     }
 
     CheckToSeeIsTheMatchFinished();

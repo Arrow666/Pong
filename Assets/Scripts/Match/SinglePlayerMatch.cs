@@ -28,18 +28,7 @@ public class SinglePlayerMatch : IMatch
 
       playerGObj.AddComponent<Paddle>().playSide = GamePlaySide.Left;
 
-      switch (sp_MatchModeStructure.gameDifficultyTypes)
-      {
-        case GameDifficultyTypes.Easy:
-          botGObj.AddComponent<BotPaddleEasy>().playSide = GamePlaySide.Right;
-          break;
-        case GameDifficultyTypes.Normal:
-          botGObj.AddComponent<BotPaddleNormal>().playSide = GamePlaySide.Right;
-          break;
-        case GameDifficultyTypes.Hard:
-          botGObj.AddComponent<BotPaddleHard>().playSide = GamePlaySide.Right;
-          break;
-      }
+      CreateBot(sp_MatchModeStructure, botGObj, GamePlaySide.Right);
 
       players.Add(PlayerId.One, player);
       players.Add(PlayerId.Two, botPlayer);
@@ -58,18 +47,7 @@ public class SinglePlayerMatch : IMatch
 
       playerGObj.AddComponent<Paddle>().playSide = GamePlaySide.Right;
 
-      switch (sp_MatchModeStructure.gameDifficultyTypes)
-      {
-        case GameDifficultyTypes.Easy:
-          botGObj.AddComponent<BotPaddleEasy>().playSide = GamePlaySide.Left;
-          break;
-        case GameDifficultyTypes.Normal:
-          botGObj.AddComponent<BotPaddleNormal>().playSide = GamePlaySide.Left;
-          break;
-        case GameDifficultyTypes.Hard:
-          botGObj.AddComponent<BotPaddleHard>().playSide = GamePlaySide.Left;
-          break;
-      }
+      CreateBot(sp_MatchModeStructure, botGObj, GamePlaySide.Left);
 
       players.Add(PlayerId.One, player);
       players.Add(PlayerId.Two, botPlayer);
@@ -77,6 +55,22 @@ public class SinglePlayerMatch : IMatch
       scoreMaintainer = new ScoreMaintainer(sp_MatchModeStructure.maxScoreToWin, true);
     }
 
+  }
+
+  private void CreateBot(SinglePlayerMatchModeStructure sp_MatchModeStructure, GameObject botGObj, GamePlaySide botToPlaySide)
+  {
+    switch (sp_MatchModeStructure.gameDifficultyTypes)
+    {
+      case GameDifficultyTypes.Easy:
+        botGObj.AddComponent<BotPaddleEasy>().playSide = botToPlaySide;
+        break;
+      case GameDifficultyTypes.Normal:
+        botGObj.AddComponent<BotPaddleNormal>().playSide = botToPlaySide;
+        break;
+      case GameDifficultyTypes.Hard:
+        botGObj.AddComponent<BotPaddleHard>().playSide = botToPlaySide;
+        break;
+    }
   }
 
   public int ScoreUpdate(GamePlaySide playerScoredSide)
@@ -89,7 +83,7 @@ public class SinglePlayerMatch : IMatch
     return scoreToUpdate;
   }
 
-  public void ResetPositions()
+  public void ResetPositionsForNextTurn()
   {
     foreach (Player player in players.Values.ToList())
     {

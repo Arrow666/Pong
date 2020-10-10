@@ -65,7 +65,7 @@ public class TwoPlayerMatch : IMatch
     return scoreToUpdate;
   }
 
-  public void ResetPositions()
+  public void ResetPositionsForNextTurn()
   {
     foreach (Player player in players.Values.ToList())
     {
